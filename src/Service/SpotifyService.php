@@ -4,37 +4,30 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use SpotifyWebAPI\Session;
+use App\Entity\User;
 use SpotifyWebAPI\SpotifyWebAPI;
+use Symfony\Component\Security\Core\Security;
 
 class SpotifyService
 {
-    public function test()
+    private Security $security;
+
+    private SpotifyWebAPI $spotifyWebAPI;
+
+    public function __construct(SpotifyWebAPI $spotifyWebAPI, Security $security)
     {
+        $this->spotifyWebAPI = $spotifyWebAPI;
+        $this->security = $security;
+    }
 
-        $session = new Session(
-            '72773783c84c42619692ad0dadb4c63c',
-            'a8718b3730924d5f80fcc4f72bdc8071',
-            '127.0.0.1:8000'
-        );
+    public function getPlaylists()
+    {
+        $currentUser = $this->security->getUser();
 
-        $api = new SpotifyWebAPI();
+        assert($currentUser instanceof User);
 
-        if (isset($_GET['code'])) {
-            $session->requestAccessToken($_GET['code']);
-            $api->setAccessToken($session->getAccessToken());
+        $this->spotifyWebAPI->setAccessToken($currentUser->getSpotifyAccessToken());
 
-            dump($api->me());
-        } else {
-            $options = [
-                'scope' => [
-                    'user-read-email',
-                ],
-            ];
-
-            header('Location: ' . $session->getAuthorizeUrl($options));
-            die();
-        }
-
+        return $this->spotifyWebAPI->getMyPlaylists();
     }
 }

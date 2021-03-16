@@ -41,7 +41,7 @@ class User implements UserInterface
     /**
      * @var string The access token from Spotify
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
      */
     private $spotifyAccessToken;
 

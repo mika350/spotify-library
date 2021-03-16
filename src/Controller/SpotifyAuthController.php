@@ -2,12 +2,9 @@
 
 namespace App\Controller;
 
-use Doctrine\ORM\EntityManager;
-use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
-use SpotifyWebAPI\Session;
-use SpotifyWebAPI\SpotifyWebAPI;
+use App\Service\SpotifyAuthService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -15,62 +12,30 @@ class SpotifyAuthController extends AbstractController
 {
     /**
      * @Route("/spotify/auth", name="spotify_auth")
+     *
+     * @param SpotifyAuthService $spotifyService
+     * @return RedirectResponse
      */
-    public function authAction()
+    public function authAction(SpotifyAuthService $spotifyService): RedirectResponse
     {
-        $session = new Session(
-            '72773783c84c42619692ad0dadb4c63c',
-            'a8718b3730924d5f80fcc4f72bdc8071',
-            'http://127.0.0.1:8085/spotify/auth/callback'
-        );
+        $spotifyAuthUrl = $spotifyService->spotifyUserAuth();
 
-        $state = $session->generateState();
-        $options = [
-            'scope' => [
-                'playlist-read-private',
-                'user-read-private',
-                'streaming',
-                'app-remote-control',
-                'user-modify-playback-state'
-            ],
-            'state' => $state,
-        ];
-
-        return $this->redirect($session->getAuthorizeUrl($options));
+        return $this->redirect($spotifyAuthUrl);
     }
 
     /**
      * @Route("/spotify/auth/callback", name="spotify_auth_callback")
      *
+     * @param SpotifyAuthService $spotifyService
      * @param Request $request
+     *
+     * @return RedirectResponse
      */
-    public function authCallbackAction(Request $request)
+    public function authCallbackAction(SpotifyAuthService $spotifyService, Request $request): RedirectResponse
     {
-        $session = new Session(
-            '72773783c84c42619692ad0dadb4c63c',
-            'a8718b3730924d5f80fcc4f72bdc8071',
-            'http://127.0.0.1:8085/spotify/auth/callback'
-        );
+        dump($request->get('code'));
 
-
-
-
-        $api = new SpotifyWebAPI();
-
-        $session->requestAccessToken($_GET['code']);
-        $api->setAccessToken($session->getAccessToken());
-
-        /** @var EntityManagerInterface $em */
-        $em = $this->getDoctrine()->getManager();
-
-        $user = $em->find(User::class, 1);
-
-        $user->setSpotifyAccessToken($session->getAccessToken());
-
-
-        $em->persist($user);
-        $em->flush();
-
+        $spotifyService->spotifyUserStore($request->get('code'));
 
         return $this->redirect($this->generateUrl('main'));
     }

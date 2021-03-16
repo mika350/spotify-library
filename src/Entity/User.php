@@ -1,13 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * Class User
+ *
+ * @author Mika Bertels <mail@mikabertels.de>
+ * @package App\Entity
+ *
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
@@ -26,24 +32,28 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @var array
      * @ORM\Column(type="json")
+     * @var array
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
-     * @var string The hashed password
-     *
      * @ORM\Column(type="string")
+     * @var string The hashed password
      */
-    private $password;
+    private string $password;
 
     /**
-     * @var string The access token from Spotify
-     *
      * @ORM\Column(type="text")
+     * @var string The access token from Spotify
      */
-    private $spotifyAccessToken;
+    private string $spotifyAccessToken;
+
+    /**
+     * @ORM\Column(type="text")
+     * @var string The refresh token from Spotify
+     */
+    private string $spotifyRefreshToken;
 
     /**
      * @return string
@@ -55,6 +65,8 @@ class User implements UserInterface
 
     /**
      * @param string $spotifyAccessToken
+     *
+     * @return self
      */
     public function setSpotifyAccessToken(string $spotifyAccessToken): self
     {
@@ -89,6 +101,8 @@ class User implements UserInterface
      * A visual identifier that represents this user.
      *
      * @see UserInterface
+     *
+     * @return string
      */
     public function getUsername(): string
     {
@@ -97,6 +111,8 @@ class User implements UserInterface
 
     /**
      * @see UserInterface
+     *
+     * @return array
      */
     public function getRoles(): array
     {
@@ -116,6 +132,8 @@ class User implements UserInterface
 
     /**
      * @see UserInterface
+     *
+     * @return string
      */
     public function getPassword(): string
     {
@@ -134,6 +152,8 @@ class User implements UserInterface
      * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
      *
      * @see UserInterface
+     *
+     * @return string
      */
     public function getSalt(): ?string
     {
@@ -142,8 +162,10 @@ class User implements UserInterface
 
     /**
      * @see UserInterface
+     *
+     * @return void
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
@@ -157,6 +179,24 @@ class User implements UserInterface
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSpotifyRefreshToken(): string
+    {
+        return $this->spotifyRefreshToken;
+    }
+
+    /**
+     * @param string $spotifyRefreshToken
+     */
+    public function setSpotifyRefreshToken(string $spotifyRefreshToken): self
+    {
+        $this->spotifyRefreshToken = $spotifyRefreshToken;
 
         return $this;
     }

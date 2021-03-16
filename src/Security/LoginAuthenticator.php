@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Security;
 
 use App\Entity\User;
@@ -54,7 +56,7 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator implements Passw
         ];
         $request->getSession()->set(
             Security::LAST_USERNAME,
-            $credentials['email']
+            $credentials['email'],
         );
 
         return $credentials;
@@ -84,6 +86,8 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator implements Passw
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
+     *
+     * @return string
      */
     public function getPassword($credentials): ?string
     {

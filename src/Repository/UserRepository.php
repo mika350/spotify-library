@@ -1,67 +1,100 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Entity\UserInterface;
+use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use function get_class;
 
 /**
- * @method User|null find($id, $lockMode = null, $lockVersion = null)
- * @method User|null findOneBy(array $criteria, array $orderBy = null)
- * @method User[]    findAll()
- * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * Class UserRepository
+ *
+ * @author Mika Bertels <info@bestit.de>
+ * @package App\Repository
  */
-class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
+    /**
+     * UserRepository constructor.
+     *
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
+
+        $this->setLogger(new NullLogger());
+    }
+
+    /**
+     * Update an user.
+     *
+     * @param BaseUserInterface $user
+     *
+     * @return bool
+     */
+    public function updateUser(UserInterface $user): bool
+    {
+        $success = false;
+
+        try {
+            $this->_em->persist($user);
+            $this->_em->flush();
+
+            $success = true;
+        } catch (ORMException $exception) {
+            $this->logger->error(
+                'An error occurred while updating the user.',
+                [
+                    'exception' => $exception,
+                    'user' => $user,
+                ],
+            );
+        }
+
+        return $success;
     }
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
+     *
+     * @param BaseUserInterface $user
+     * @param string $newEncodedPassword
+     *
+     * @return void
      */
-    public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
+    public function upgradePassword(BaseUserInterface $user, string $newEncodedPassword): void
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
         $user->setPassword($newEncodedPassword);
-        $this->_em->persist($user);
-        $this->_em->flush();
-    }
 
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        try {
+            $this->_em->persist($user);
+            $this->_em->flush();
+        } catch (ORMException $exception) {
+            $this->logger->error(
+                'Error while upgrading the users password.',
+                [
+                    'exception' => $exception,
+                    'user' => $user,
+                ],
+            );
+        }
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

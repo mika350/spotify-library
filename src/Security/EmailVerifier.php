@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Security;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,8 +29,8 @@ class EmailVerifier
     {
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
             $verifyEmailRouteName,
-            $user->getId(),
-            $user->getEmail()
+            (string) $user->getId(),
+            $user->getEmail(),
         );
 
         $context = $email->getContext();
@@ -43,10 +45,16 @@ class EmailVerifier
 
     /**
      * @throws VerifyEmailExceptionInterface
+     *
+     * @return void
      */
     public function handleEmailConfirmation(Request $request, UserInterface $user): void
     {
-        $this->verifyEmailHelper->validateEmailConfirmation($request->getUri(), $user->getId(), $user->getEmail());
+        $this->verifyEmailHelper->validateEmailConfirmation(
+            $request->getUri(),
+            (string) $user->getId(),
+            $user->getEmail(),
+        );
 
         $user->setIsVerified(true);
 

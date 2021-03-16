@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Service\SpotifyAuthService;
@@ -11,9 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class SpotifyAuthController extends AbstractController
 {
     /**
+     * @param SpotifyAuthService $spotifyService
      * @Route("/spotify/auth", name="spotify_auth")
      *
-     * @param SpotifyAuthService $spotifyService
      * @return RedirectResponse
      */
     public function authAction(SpotifyAuthService $spotifyService): RedirectResponse
@@ -33,9 +35,7 @@ class SpotifyAuthController extends AbstractController
      */
     public function authCallbackAction(SpotifyAuthService $spotifyService, Request $request): RedirectResponse
     {
-        dump($request->get('code'));
-
-        $spotifyService->spotifyUserStore($request->get('code'));
+        $spotifyService->spotifyUserStoreAccessToken($request->get('code'));
 
         return $this->redirect($this->generateUrl('main'));
     }

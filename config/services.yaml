@@ -29,11 +29,6 @@ services:
             - '%app.spotify.client_secret%'
             - '%app.spotify.callback_url%'
 
-    App\Service\SpotifyService:
-        arguments:
-            - '@SpotifyWebAPI\SpotifyWebAPI'
-            - '@security.helper'
-
     App\Service\SpotifyAuthService:
         arguments:
             - '@SpotifyWebAPI\Session'

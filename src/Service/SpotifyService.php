@@ -4,30 +4,30 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\User;
-use SpotifyWebAPI\SpotifyWebAPI;
+use App\Entity\UserInterface;
 use Symfony\Component\Security\Core\Security;
 
 class SpotifyService
 {
     private Security $security;
+    /**
+     * @var SpotifyClient
+     */
+    private SpotifyClient $spotifyClient;
 
-    private SpotifyWebAPI $spotifyWebAPI;
 
-    public function __construct(SpotifyWebAPI $spotifyWebAPI, Security $security)
+    public function __construct(Security $security, SpotifyClient $spotifyClient)
     {
-        $this->spotifyWebAPI = $spotifyWebAPI;
         $this->security = $security;
+        $this->spotifyClient = $spotifyClient;
     }
 
     public function getPlaylists()
     {
         $currentUser = $this->security->getUser();
 
-        assert($currentUser instanceof User);
+        assert($currentUser instanceof UserInterface);
 
-        $this->spotifyWebAPI->setAccessToken($currentUser->getSpotifyAccessToken());
-
-        return $this->spotifyWebAPI->getMyPlaylists();
+        return $this->spotifyClient->getApiClient($currentUser)->getMyPlaylists();
     }
 }

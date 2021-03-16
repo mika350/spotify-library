@@ -12,3 +12,6 @@
 
 /.env
 /.idea
+
+/.phpcs-cache
+/phpcs.xml

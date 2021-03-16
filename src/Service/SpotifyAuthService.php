@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
 use SpotifyWebAPI\Session;
-use SpotifyWebAPI\SpotifyWebAPI;
 use Symfony\Component\Security\Core\Security;
 
 class SpotifyAuthService
@@ -37,7 +35,7 @@ class SpotifyAuthService
         return $this->spotifySession->getAuthorizeUrl($options);
     }
 
-    public function spotifyUserStore(string $spotifyCode)
+    public function spotifyUserStoreAccessToken(string $spotifyCode)
     {
         $currentUser = $this->security->getUser();
 
@@ -45,10 +43,12 @@ class SpotifyAuthService
 
         $this->spotifySession->requestAccessToken($spotifyCode);
 
-        $currentUser->setSpotifyAccessToken($this->spotifySession->getAccessToken());
+        $accessToken = $this->spotifySession->getAccessToken();
+        $refreshToken = $this->spotifySession->getRefreshToken();
 
-        $this->entityManager->persist($currentUser);
-        $this->entityManager->flush();
+        $currentUser->setSpotifyAccessToken($accessToken);
+        $currentUser->setSpotifyRefreshToken($refreshToken);
+
+        $this->entityManager->getRepository(User::class)->updateUser($currentUser);
     }
-
 }

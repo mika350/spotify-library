@@ -49,6 +49,6 @@ class SpotifyAuthService
         $currentUser->setSpotifyAccessToken($accessToken);
         $currentUser->setSpotifyRefreshToken($refreshToken);
 
-        $this->entityManager->getRepository(User::class)->updateUser($currentUser);
+        $this->entityManager->getRepository(User::class)->saveUser($currentUser);
     }
 }

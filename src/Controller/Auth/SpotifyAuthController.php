@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Auth;
 
 use App\Service\SpotifyAuthService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -10,6 +10,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class SpotifyAuthController
+ *
+ * @author Mika Bertels <mail@mikabertels.de>
+ * @package App\Controller\Auth
+ */
 class SpotifyAuthController extends AbstractController
 {
     /**

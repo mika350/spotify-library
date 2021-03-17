@@ -55,7 +55,7 @@ class SpotifyClient
             $user->setSpotifyAccessToken($refreshedAccessToken);
             $user->setSpotifyRefreshToken($refreshToken);
 
-            $this->userRepository->updateUser($user);
+            $this->userRepository->saveUser($user);
 
             $this->spotifyWebAPI->setAccessToken($refreshedAccessToken);
         }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Auth;
 
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -10,9 +10,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+/**
+ * Class LoginController
+ *
+ * @author Mika Bertels <mail@mikabertels.de>
+ * @package App\Controller\Auth
+ */
 class LoginController extends AbstractController
 {
     /**
+     * Login an user.
+     *
+     * @param AuthenticationUtils $authenticationUtils
+     *
      * @Route("/login", name="app_login")
      *
      * @return Response
@@ -32,12 +42,12 @@ class LoginController extends AbstractController
     }
 
     /**
+     * Logout an user.
+     *
      * @Route("/logout", name="app_logout")
      *
      * @return void
      */
     public function logout(): void
-    {
-        throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
-    }
+    {}
 }

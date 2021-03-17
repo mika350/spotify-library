@@ -44,16 +44,18 @@ class User implements UserInterface
     private string $password;
 
     /**
-     * @ORM\Column(type="text")
-     * @var string The access token from Spotify
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @var string|null The access token from Spotify
      */
-    private string $spotifyAccessToken;
+    private ?string $spotifyAccessToken = null;
 
     /**
-     * @ORM\Column(type="text")
-     * @var string The refresh token from Spotify
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @var string|null The refresh token from Spotify
      */
-    private string $spotifyRefreshToken;
+    private ?string $spotifyRefreshToken = null;
 
     /**
      * @return string

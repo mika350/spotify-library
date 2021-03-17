@@ -40,21 +40,19 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
-     * Update an user.
+     * Save an user object.
      *
      * @param BaseUserInterface $user
      *
      * @return bool
      */
-    public function updateUser(UserInterface $user): bool
+    public function saveUser(UserInterface $user): bool
     {
-        $success = false;
+        $success = true;
 
         try {
             $this->_em->persist($user);
             $this->_em->flush();
-
-            $success = true;
         } catch (ORMException $exception) {
             $this->logger->error(
                 'An error occurred while updating the user.',
@@ -63,6 +61,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                     'user' => $user,
                 ],
             );
+
+            $success = false;
         }
 
         return $success;

@@ -17,6 +17,12 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
+/**
+ * Class MainController
+ *
+ * @author Mika Bertels <mail@mikabertels.de>
+ * @package App\Controller
+ */
 class MainController extends AbstractController
 {
     /**
@@ -35,27 +41,5 @@ class MainController extends AbstractController
         ]);
     }
 
-    /**
-     * @param EmailVerifier $emailVerifier
-     * @param Security $security
-     * @return RedirectResponse
-     * @Route("/resend-email", name="resend-email")
-     *
-     */
-    public function resendConfirmMailAction(EmailVerifier $emailVerifier, Security $security): RedirectResponse
-    {
-        $user = $security->getUser();
 
-        $emailVerifier->sendEmailConfirmation(
-            'app_verify_email',
-            $user,
-            (new TemplatedEmail())
-                ->from(new Address('test@exmaple.com', 'Test Bot'))
-                ->to($user->getEmail())
-                ->subject('Please Confirm your Email')
-                ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
-
-        return $this->redirect('main');
-    }
 }

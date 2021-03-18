@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Auth;
 
-use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,26 +18,38 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class LoginController extends AbstractController
 {
     /**
-     * Login an user.
+     * Instance of AuthenticationUtils
+     *
+     * @var AuthenticationUtils
+     */
+    private AuthenticationUtils $authenticationUtils;
+
+    /**
+     * LoginController constructor.
      *
      * @param AuthenticationUtils $authenticationUtils
+     */
+    public function __construct(AuthenticationUtils $authenticationUtils)
+    {
+        $this->authenticationUtils = $authenticationUtils;
+    }
+
+    /**
+     * Login an user.
      *
      * @Route("/login", name="app_login")
      *
      * @return Response
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+        $error = $this->authenticationUtils->getLastAuthenticationError();
+        $lastUsername = $this->authenticationUtils->getLastUsername();
 
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
-
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render(
+            'security/login.html.twig',
+            ['last_username' => $lastUsername, 'error' => $error],
+        );
     }
 
     /**
@@ -49,5 +60,6 @@ class LoginController extends AbstractController
      * @return void
      */
     public function logout(): void
-    {}
+    {
+    }
 }

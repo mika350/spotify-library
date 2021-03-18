@@ -14,50 +14,158 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @author Mika Bertels <mail@mikabertels.de>
  * @package App\Entity
  *
- * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository", repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * The email address from an user.
+     *
+     * @ORM\Column(type="string", length=255, unique=true, nullable=false)
      */
-    private $id;
+    private string $email;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * The unique identifier from an user.
+     *
+     * @ORM\Id
+     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\GeneratedValue
+     *
+     * @var int
      */
-    private $email;
+    private int $id;
+
+    /**
+     * Indicator if the users profile is verified.
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     *
+     * @var bool
+     */
+    private bool $isVerified = false;
+
+    /**
+     * The name from an user.
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @var string|null
+     */
+    private ?string $name = null;
 
     /**
      * @ORM\Column(type="json")
+     *
      * @var array
      */
     private array $roles = [];
 
     /**
-     * @ORM\Column(type="string")
-     * @var string The hashed password
+     * The hashed password from an user.
+     *
+     * @ORM\Column(type="string", nullable=false)
+     *
+     * @var string
      */
     private string $password;
 
     /**
+     * The users access token from Spotify.
+     *
      * @ORM\Column(type="text", nullable=true)
      *
-     * @var string|null The access token from Spotify
+     * @var string|null
      */
     private ?string $spotifyAccessToken = null;
 
     /**
+     * The users refresh token from Spotify
+     *
      * @ORM\Column(type="text", nullable=true)
      *
-     * @var string|null The refresh token from Spotify
+     * @var string|null
      */
     private ?string $spotifyRefreshToken = null;
 
     /**
+     * Erase sensitive data from an user.
+     *
+     * @return void
+     */
+    public function eraseCredentials(): void
+    {
+        $this->plainPassword = null;
+    }
+
+    /**
+     * Get the users email address.
+     *
+     * @return string|null
+     */
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    /**
+     * Get the users identifier.
+     *
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get the users name.
+     *
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Get the users hashed password.
+     *
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return (string) $this->password;
+    }
+
+    /**
+     * Get the users roles.
+     *
+     * @return array
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    /**
+     * Get the users salt.
+     *
+     * @return string|null
+     */
+    public function getSalt(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * Get the users Spotify access token.
+     *
      * @return string
      */
     public function getSpotifyAccessToken(): string
@@ -66,37 +174,13 @@ class User implements UserInterface
     }
 
     /**
-     * @param string $spotifyAccessToken
+     * Get the users Spotify refresh token.
      *
-     * @return self
+     * @return string
      */
-    public function setSpotifyAccessToken(string $spotifyAccessToken): self
+    public function getSpotifyRefreshToken(): string
     {
-        $this->spotifyAccessToken = $spotifyAccessToken;
-
-        return $this;
-    }
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isVerified = false;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
+        return $this->spotifyRefreshToken;
     }
 
     /**
@@ -112,72 +196,36 @@ class User implements UserInterface
     }
 
     /**
-     * @see UserInterface
+     * Check if the user is verified.
      *
-     * @return array
+     * @return bool
      */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
-    /**
-     * @see UserInterface
-     *
-     * @return string
-     */
-    public function getPassword(): string
-    {
-        return (string) $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Returning a salt is only needed, if you are not using a modern
-     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
-     *
-     * @see UserInterface
-     *
-     * @return string
-     */
-    public function getSalt(): ?string
-    {
-        return null;
-    }
-
-    /**
-     * @see UserInterface
-     *
-     * @return void
-     */
-    public function eraseCredentials(): void
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
-    }
-
     public function isVerified(): bool
     {
         return $this->isVerified;
     }
 
+    /**
+     * Set the users email address.
+     *
+     * @param string $email
+     *
+     * @return $this
+     */
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Set that the user is verified.
+     *
+     * @param bool $isVerified
+     *
+     * @return $this
+     */
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
@@ -186,15 +234,67 @@ class User implements UserInterface
     }
 
     /**
-     * @return string
+     * Set the users name.
+     *
+     * @param string|null $name
+     *
+     * @return User
      */
-    public function getSpotifyRefreshToken(): string
+    public function setName(?string $name): User
     {
-        return $this->spotifyRefreshToken;
+        $this->name = $name;
+
+        return $this;
     }
 
     /**
+     * Set the users hashed password.
+     *
+     * @param string $password
+     *
+     * @return $this
+     */
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Set the users roles.
+     *
+     * @param array $roles
+     *
+     * @return $this
+     */
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Set the users Spotify token.
+     *
+     * @param string $spotifyAccessToken
+     *
+     * @return self
+     */
+    public function setSpotifyAccessToken(string $spotifyAccessToken): self
+    {
+        $this->spotifyAccessToken = $spotifyAccessToken;
+
+        return $this;
+    }
+
+    /**
+     * Set the users SpotifyRefreshToken
+     *
      * @param string $spotifyRefreshToken
+     *
+     * @return self
      */
     public function setSpotifyRefreshToken(string $spotifyRefreshToken): self
     {

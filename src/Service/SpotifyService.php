@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Entity\User;
 use App\Entity\UserInterface;
+use SpotifyWebAPI\SpotifyWebAPI;
 use Symfony\Component\Security\Core\Security;
 
 /**
@@ -30,6 +32,13 @@ class SpotifyService
     private SpotifyClient $spotifyClient;
 
     /**
+     * Instance of currently logged in User.
+     *
+     * @var UserInterface
+     */
+    private UserInterface $currentUser;
+
+    /**
      * SpotifyService constructor.
      *
      * @param Security $security
@@ -39,19 +48,37 @@ class SpotifyService
     {
         $this->security = $security;
         $this->spotifyClient = $spotifyClient;
+
+        $this->currentUser = $this->security->getUser();
     }
 
     /**
-     * Get the users playlists
+     * Get the SpotifyApiClient.
+     *
+     * @return SpotifyWebAPI
+     */
+    private function client(): SpotifyWebAPI
+    {
+        return $this->spotifyClient->getApiClient($this->currentUser);
+    }
+
+    /**
+     * Get the users playlists.
+     *
+     * @return object
+     */
+    public function getPlaylists(): object
+    {
+        return $this->client()->getMyPlaylists();
+    }
+
+    /**
+     * Get the current playback info.
      *
      * @return array|object
      */
-    public function getPlaylists()
+    public function getCurrentPlayback(): object
     {
-        $currentUser = $this->security->getUser();
-
-        assert($currentUser instanceof UserInterface);
-
-        return $this->spotifyClient->getApiClient($currentUser)->getMyPlaylists();
+        return $this->client()->getMyCurrentPlaybackInfo();
     }
 }

@@ -9,4 +9,8 @@
 
     <file>src/</file>
     <file>tests/</file>
+
+    <rule ref="BestIt.Functions.NoSimplePropertyMethod">
+        <exclude name="BestIt.Functions.NoSimplePropertyMethod.ShouldUseTypedPropertyDirectly"/>
+    </rule>
 </ruleset>

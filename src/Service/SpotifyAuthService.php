@@ -28,6 +28,11 @@ class SpotifyAuthService
         $options = [
             'scope' => [
                 'playlist-read-private',
+                'user-read-recently-played',
+                'user-read-playback-position',
+                'app-remote-control',
+                'streaming',
+                'user-read-playback-state',
             ],
             'state' => $state,
         ];

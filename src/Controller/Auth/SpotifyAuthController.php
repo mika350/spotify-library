@@ -18,31 +18,51 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SpotifyAuthController extends AbstractController
 {
+
     /**
-     * @param SpotifyAuthService $spotifyService
+     * Instance of SpotifyService.
+     *
+     * @var SpotifyAuthService
+     */
+    private SpotifyAuthService $spotifyAuthService;
+
+    /**
+     * SpotifyAuthController constructor.
+     *
+     * @param SpotifyAuthService $spotifyAuthService
+     */
+    public function __construct(SpotifyAuthService $spotifyAuthService)
+    {
+        $this->spotifyAuthService = $spotifyAuthService;
+    }
+
+    /**
+     * Redirect an user for Spotify access.
+     *
      * @Route("/spotify/auth", name="spotify_auth")
      *
      * @return RedirectResponse
      */
-    public function authAction(SpotifyAuthService $spotifyService): RedirectResponse
+    public function authAction(): RedirectResponse
     {
-        $spotifyAuthUrl = $spotifyService->spotifyUserAuth();
+        $spotifyAuthUrl = $this->spotifyAuthService->spotifyUserAuth();
 
         return $this->redirect($spotifyAuthUrl);
     }
 
     /**
-     * @Route("/spotify/auth/callback", name="spotify_auth_callback")
+     * Handle the Spotify access token from an user.
      *
-     * @param SpotifyAuthService $spotifyService
      * @param Request $request
+     *
+     * @Route("/spotify/auth/callback", name="spotify_auth_callback")
      *
      * @return RedirectResponse
      */
-    public function authCallbackAction(SpotifyAuthService $spotifyService, Request $request): RedirectResponse
+    public function authCallbackAction(Request $request): RedirectResponse
     {
-        $spotifyService->spotifyUserStoreAccessToken($request->get('code'));
+        $this->spotifyAuthService->spotifyUserStoreAccessToken($request->get('code'));
 
-        return $this->redirect($this->generateUrl('main'));
+        return $this->redirect($this->generateUrl('app_main'));
     }
 }

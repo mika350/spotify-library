@@ -6,7 +6,6 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\Entity\UserInterface;
-use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -15,6 +14,7 @@ use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
 use function get_class;
 
 /**

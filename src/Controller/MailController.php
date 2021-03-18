@@ -24,27 +24,50 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 class MailController extends AbstractController
 {
     /**
+     * Instance of EmailVerifier.
+     *
+     * @var EmailVerifier
+     */
+    private EmailVerifier $emailVerifier;
+
+    /**
+     * Instance of Security.
+     *
+     * @var Security
+     */
+    private Security $security;
+
+    /**
+     * MailController constructor.
+     *
+     * @param EmailVerifier $emailVerifier
+     * @param Security $security
+     */
+    public function __construct(EmailVerifier $emailVerifier, Security $security)
+    {
+        $this->emailVerifier = $emailVerifier;
+        $this->security = $security;
+    }
+
+    /**
      * Resend the confirm mail to an user.
      *
      * @Route("/resend-email", name="resend-email")
      *
-     * @param EmailVerifier $emailVerifier
-     * @param Security $security
-     *
      * @return RedirectResponse
      */
-    public function resendConfirmMailAction(EmailVerifier $emailVerifier, Security $security): RedirectResponse
+    public function resendConfirmMailAction(): RedirectResponse
     {
-        $user = $security->getUser();
+        $user = $this->security->getUser();
 
-        $emailVerifier->sendEmailConfirmation(
+        $this->emailVerifier->sendEmailConfirmation(
             'app_verify_email',
             $user,
             (new TemplatedEmail())
                 ->from(new Address('test@exmaple.com', 'Test Bot'))
                 ->to($user->getEmail())
                 ->subject('Please Confirm your Email')
-                ->htmlTemplate('registration/confirmation_email.html.twig')
+                ->htmlTemplate('registration/confirmation_email.html.twig'),
         );
 
         return $this->redirect('main');
@@ -53,21 +76,20 @@ class MailController extends AbstractController
     /**
      * Verify an users email address.
      *
-     * @Route("/verify/email", name="app_verify_email")
-     *
-     * @param EmailVerifier $emailVerifier
      * @param Request $request
+     *
+     * @Route("/verify/email", name="app_verify_email")
      *
      * @return Response
      */
-    public function verifyUserEmail(EmailVerifier $emailVerifier, Request $request): Response
+    public function verifyUserEmail(Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         try {
-            $emailVerifier->handleEmailConfirmation($request, $this->getUser());
+            $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
 
-            $redirectReturn = $this->redirectToRoute('main');
+            $redirectReturn = $this->redirectToRoute('app_main');
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $exception->getReason());
 

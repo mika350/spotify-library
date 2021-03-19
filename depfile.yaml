@@ -1,0 +1,38 @@
+paths:
+    - ./src
+
+exclude_files:
+    - '#.*test.*#'
+
+layers:
+    -   name: Controller
+        collectors:
+            -   type: className
+                regex: .*Controller.*
+
+    -   name: Facade
+        collectors:
+            -   type: className
+                regex: .*Facade.*
+
+    -   name: Repository
+        collectors:
+            -   type: className
+                regex: .*Repository.*
+
+    -   name: Service
+        collectors:
+            -   type: directory
+                regex: src/Service/.*
+
+ruleset:
+    Controller:
+        - Facade
+
+    Facade:
+        - Service
+
+    Service:
+        - Repository
+
+    Repository: ~

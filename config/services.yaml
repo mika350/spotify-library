@@ -3,6 +3,9 @@ parameters:
     app.spotify.client_secret: '%env(SPOTIFY_APP_CLIENT_SECRET)%'
     app.spotify.callback_url: '%env(SPOTIFY_APP_CALLBACK_URL)%'
 
+    app.mail.sender.address: '%env(APP_MAIL_SENDER_ADDRESS)%'
+    app.mail.sender.name: '%env(APP_MAIL_SENDER_NAME)%'
+
 services:
     _defaults:
         autowire: true
@@ -20,6 +23,11 @@ services:
     App\Controller\:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
+
+    App\Service\EmailService:
+        arguments:
+            - '%app.mail.sender.address%'
+            - '%app.mail.sender.name%'
 
     SpotifyWebAPI\SpotifyWebAPI: ~
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Auth;
 
-use App\Service\SpotifyAuthService;
+use App\Facade\SpotifyAuthFacade;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,22 +18,21 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SpotifyAuthController extends AbstractController
 {
-
     /**
-     * Instance of SpotifyService.
+     * Instance of SpotifyAuthFacade.
      *
-     * @var SpotifyAuthService
+     * @var SpotifyAuthFacade
      */
-    private SpotifyAuthService $spotifyAuthService;
+    private SpotifyAuthFacade $spotifyAuthFacade;
 
     /**
      * SpotifyAuthController constructor.
      *
-     * @param SpotifyAuthService $spotifyAuthService
+     * @param SpotifyAuthFacade $spotifyAuthFacade
      */
-    public function __construct(SpotifyAuthService $spotifyAuthService)
+    public function __construct(SpotifyAuthFacade $spotifyAuthFacade)
     {
-        $this->spotifyAuthService = $spotifyAuthService;
+        $this->spotifyAuthFacade = $spotifyAuthFacade;
     }
 
     /**
@@ -45,7 +44,7 @@ class SpotifyAuthController extends AbstractController
      */
     public function authAction(): RedirectResponse
     {
-        $spotifyAuthUrl = $this->spotifyAuthService->spotifyUserAuth();
+        $spotifyAuthUrl = $this->spotifyAuthFacade->getAuthUrl();
 
         return $this->redirect($spotifyAuthUrl);
     }
@@ -61,7 +60,7 @@ class SpotifyAuthController extends AbstractController
      */
     public function authCallbackAction(Request $request): RedirectResponse
     {
-        $this->spotifyAuthService->spotifyUserStoreAccessToken($request->get('code'));
+        $this->spotifyAuthFacade->requestAndStoreAccessKeys($request->get('code'));
 
         return $this->redirect($this->generateUrl('app_main'));
     }

@@ -72,6 +72,13 @@ class User implements UserInterface
     private string $password;
 
     /**
+     * The plain password from an user. DO NOT STORE IT ANYWHERE!
+     *
+     * @var string
+     */
+    private string $plainPassword;
+
+    /**
      * The users access token from Spotify.
      *
      * @ORM\Column(type="text", nullable=true)
@@ -96,7 +103,7 @@ class User implements UserInterface
      */
     public function eraseCredentials(): void
     {
-        $this->plainPassword = null;
+        $this->plainPassword = '';
     }
 
     /**

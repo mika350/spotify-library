@@ -6,7 +6,7 @@ namespace App\Facade;
 
 use App\Entity\User;
 use App\Exception\UserNotFoundException;
-use App\Repository\UserRepository;
+use App\Service\UserService;
 
 /**
  * Class ProfileFacade
@@ -17,20 +17,20 @@ use App\Repository\UserRepository;
 class ProfileFacade
 {
     /**
-     * Instance of UserRepository.
+     * Instance of UserService.
      *
-     * @var UserRepository
+     * @var UserService
      */
-    private UserRepository $userRepository;
+    private UserService $userService;
 
     /**
      * ProfileFacade constructor.
      *
-     * @param UserRepository $userRepository
+     * @param UserService $userService
      */
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserService $userService)
     {
-        $this->userRepository = $userRepository;
+        $this->userService = $userService;
     }
 
     /**
@@ -44,7 +44,7 @@ class ProfileFacade
      */
     public function getUserById(int $userId): User
     {
-        $user = $this->userRepository->find($userId);
+        $user = $this->userService->searchById($userId);
 
         if ($user === null) {
             throw new UserNotFoundException(404, sprintf('The user with id %s was not found.', (string) $userId));

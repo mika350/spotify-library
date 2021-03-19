@@ -17,14 +17,28 @@ use Symfony\Component\Mime\Address;
 class EmailService
 {
     /**
+     * Sender address.
+     *
+     * @var string
+     */
+    private string $senderAddress;
+
+    /**
+     * Sender name.
+     *
+     * @var string
+     */
+    private string $senderName;
+
+    /**
      * EmailService constructor.
      *
      * @param string $senderAddress
      * @param string $senderName
      */
     public function __construct(
-        string $senderAddress = 'test@example.com',
-        string $senderName = 'Test Bot'
+        string $senderAddress,
+        string $senderName
     ) {
         $this->senderAddress = $senderAddress;
         $this->senderName = $senderName;

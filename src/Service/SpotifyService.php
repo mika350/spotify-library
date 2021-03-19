@@ -63,16 +63,6 @@ class SpotifyService
     }
 
     /**
-     * Get the users playlists.
-     *
-     * @return object
-     */
-    public function getPlaylists(): object
-    {
-        return $this->client()->getMyPlaylists();
-    }
-
-    /**
      * Get the current playback info.
      *
      * @return array|object
@@ -80,5 +70,15 @@ class SpotifyService
     public function getCurrentPlayback(): object
     {
         return $this->client()->getMyCurrentPlaybackInfo();
+    }
+
+    /**
+     * Get the users playlists.
+     *
+     * @return object
+     */
+    public function getPlaylists(): object
+    {
+        return $this->client()->getMyPlaylists();
     }
 }

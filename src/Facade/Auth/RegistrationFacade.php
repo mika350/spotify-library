@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Facade\Auth;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use App\Service\EmailService;
+use App\Service\UserService;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -41,11 +41,11 @@ class RegistrationFacade
     private EmailService $emailService;
 
     /**
-     * Instance of UserRepository.
+     * Instance of UserService.
      *
-     * @var UserRepository
+     * @var UserService
      */
-    private UserRepository $userRepository;
+    private UserService $userService;
 
     /**
      * RegistrationFacade constructor.
@@ -53,18 +53,18 @@ class RegistrationFacade
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param EmailVerifier $emailVerifier
      * @param EmailService $emailService
-     * @param UserRepository $userRepository
+     * @param UserService $userService
      */
     public function __construct(
         UserPasswordEncoderInterface $passwordEncoder,
         EmailVerifier $emailVerifier,
         EmailService $emailService,
-        UserRepository $userRepository
+        UserService $userService
     ) {
         $this->passwordEncoder = $passwordEncoder;
         $this->emailVerifier = $emailVerifier;
         $this->emailService = $emailService;
-        $this->userRepository = $userRepository;
+        $this->userService = $userService;
     }
 
     /**
@@ -84,7 +84,7 @@ class RegistrationFacade
             ),
         );
 
-        $this->userRepository->saveUser($user);
+        $this->userService->saveUser($user);
 
         $this->emailVerifier->sendEmailConfirmation(
             'app_verify_email',

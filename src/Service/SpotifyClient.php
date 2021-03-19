@@ -10,27 +10,48 @@ use App\Repository\UserRepository;
 use SpotifyWebAPI\Session;
 use SpotifyWebAPI\SpotifyWebAPI;
 
+/**
+ * Class SpotifyClient
+ *
+ * @author Mika Bertels <mail@mikabertels.de>
+ * @package App\Service
+ */
 class SpotifyClient
 {
-    private SpotifyWebAPI $spotifyWebAPI;
+    /**
+     * Instance of SpotifyWebAPI.
+     *
+     * @var SpotifyWebAPI
+     */
+    private SpotifyWebAPI $spotifyWebApi;
 
+    /**
+     * Instance of Session.
+     *
+     * @var Session
+     */
     private Session $spotifySession;
 
+    /**
+     * Instance of UserRepository.
+     *
+     * @var UserRepository
+     */
     private UserRepository $userRepository;
 
     /**
      * SpotifyClient constructor.
      *
-     * @param SpotifyWebAPI $spotifyWebAPI
+     * @param SpotifyWebAPI $spotifyWebApi
      * @param Session $spotifySession
      * @param UserRepository $userRepository
      */
     public function __construct(
-        SpotifyWebAPI $spotifyWebAPI,
+        SpotifyWebAPI $spotifyWebApi,
         Session $spotifySession,
         UserRepository $userRepository
     ) {
-        $this->spotifyWebAPI = $spotifyWebAPI;
+        $this->spotifyWebApi = $spotifyWebApi;
         $this->spotifySession = $spotifySession;
         $this->userRepository = $userRepository;
     }
@@ -57,9 +78,9 @@ class SpotifyClient
 
             $this->userRepository->saveUser($user);
 
-            $this->spotifyWebAPI->setAccessToken($refreshedAccessToken);
+            $this->spotifyWebApi->setAccessToken($refreshedAccessToken);
         }
 
-        return $this->spotifyWebAPI;
+        return $this->spotifyWebApi;
     }
 }

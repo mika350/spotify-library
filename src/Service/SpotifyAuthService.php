@@ -9,12 +9,42 @@ use Doctrine\ORM\EntityManager;
 use SpotifyWebAPI\Session;
 use Symfony\Component\Security\Core\Security;
 
+/**
+ * Class SpotifyAuthService
+ *
+ * @author Mika Bertels <mail@mikabertels.de>
+ * @package App\Service
+ */
 class SpotifyAuthService
 {
+    /**
+     * Instance of Session.
+     *
+     * @var Session
+     */
     private Session $spotifySession;
+
+    /**
+     * Instance of Security.
+     *
+     * @var Security
+     */
     private Security $security;
+
+    /**
+     * Instance of EntityManager.
+     *
+     * @var EntityManager
+     */
     private EntityManager $entityManager;
 
+    /**
+     * SpotifyAuthService constructor.
+     *
+     * @param Session $spotifySession
+     * @param Security $security
+     * @param EntityManager $entityManager
+     */
     public function __construct(Session $spotifySession, Security $security, EntityManager $entityManager)
     {
         $this->spotifySession = $spotifySession;
@@ -22,7 +52,12 @@ class SpotifyAuthService
         $this->entityManager = $entityManager;
     }
 
-    public function spotifyUserAuth(): string
+    /**
+     * Generate Spotify-App authorization URL.
+     *
+     * @return string
+     */
+    public function generateSpotifyAuthUrl(): string
     {
         $state = $this->spotifySession->generateState();
         $options = [
@@ -40,7 +75,14 @@ class SpotifyAuthService
         return $this->spotifySession->getAuthorizeUrl($options);
     }
 
-    public function spotifyUserStoreAccessToken(string $spotifyCode)
+    /**
+     * Store the users access and refresh key.
+     *
+     * @param string $spotifyCode
+     *
+     * @return void
+     */
+    public function storeUserSpotifyAccessCodes(string $spotifyCode): void
     {
         $currentUser = $this->security->getUser();
 

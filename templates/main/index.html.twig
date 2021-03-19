@@ -4,4 +4,10 @@
 
 {% block body %}
     <h1>Hello World</h1>
+
+    {% if user %}
+        <p>Your name is {{ user.name }}</p>
+    {% else %}
+        <p>You're not logged in.</p>
+    {% endif %}
 {% endblock %}

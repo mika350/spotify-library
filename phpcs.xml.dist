@@ -3,14 +3,13 @@
     <description>Coding standard for this project.</description>
 
     <rule ref="PHPCompatibility" />
-    <rule ref="./vendor/best-it/php_codesniffer/src/Standards/BestIt/ruleset.xml" />
+    <rule ref="./vendor/best-it/php_codesniffer/src/Standards/BestIt/ruleset.xml">
+        <exclude name="BestIt.Functions.NoSimplePropertyMethod.ShouldUseTypedPropertyDirectly"/>
+        <exclude name="BestIt.DocTags.ParamTag.MixedType"/>
+    </rule>
 
     <config name="testVersion" value="7.4" />
 
     <file>src/</file>
     <file>tests/</file>
-
-    <rule ref="BestIt.Functions.NoSimplePropertyMethod">
-        <exclude name="BestIt.Functions.NoSimplePropertyMethod.ShouldUseTypedPropertyDirectly"/>
-    </rule>
 </ruleset>

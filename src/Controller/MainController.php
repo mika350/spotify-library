@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Service\SpotifyService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Mika Bertels <mail@mikabertels.de>
  * @package App\Controller
  */
-class MainController extends AbstractController
+class MainController extends BaseController
 {
     /**
      * Main action.
@@ -23,8 +24,10 @@ class MainController extends AbstractController
      *
      * @return Response
      */
-    public function mainAction(): Response
+    public function mainAction(SpotifyService $spotifyService): Response
     {
+        dump($spotifyService->makeCall()->getMyPlaylists());die;
+
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
             'user' => $this->getUser(),

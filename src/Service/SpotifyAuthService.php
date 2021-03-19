@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\User;
+use App\Entity\User\UserEntity;
 use Doctrine\ORM\EntityManager;
 use SpotifyWebAPI\Session;
 use Symfony\Component\Security\Core\Security;
@@ -86,7 +87,7 @@ class SpotifyAuthService
     {
         $currentUser = $this->security->getUser();
 
-        assert($currentUser instanceof User);
+        assert($currentUser instanceof UserEntity);
 
         $this->spotifySession->requestAccessToken($spotifyCode);
 

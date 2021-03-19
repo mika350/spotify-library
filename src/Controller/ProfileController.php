@@ -6,7 +6,6 @@ namespace App\Controller;
 
 use App\Exception\UserNotFoundException;
 use App\Facade\ProfileFacade;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Mika Bertels <mail@mikabertels.de>
  * @package App\Controller
  */
-class ProfileController extends AbstractController
+class ProfileController extends BaseController
 {
     /**
      * Instance of ProfileFacade.

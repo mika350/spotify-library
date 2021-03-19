@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\User;
-use App\Entity\UserInterface;
+use App\Entity\User\UserInterface;
 use SpotifyWebAPI\SpotifyWebAPI;
 use Symfony\Component\Security\Core\Security;
 
@@ -18,14 +17,14 @@ use Symfony\Component\Security\Core\Security;
 class SpotifyService
 {
     /**
-     * Security component
+     * Instance of Security.
      *
      * @var Security
      */
     private Security $security;
 
     /**
-     * The Spotify client.
+     * Instance of SpotifyClient.
      *
      * @var SpotifyClient
      */
@@ -57,28 +56,37 @@ class SpotifyService
      *
      * @return SpotifyWebAPI
      */
-    private function client(): SpotifyWebAPI
+    public function makeCall(): SpotifyWebAPI
     {
         return $this->spotifyClient->getApiClient($this->currentUser);
     }
 
-    /**
-     * Get the current playback info.
-     *
-     * @return array|object
-     */
-    public function getCurrentPlayback(): object
-    {
-        return $this->client()->getMyCurrentPlaybackInfo();
-    }
-
-    /**
-     * Get the users playlists.
-     *
-     * @return object
-     */
-    public function getPlaylists(): object
-    {
-        return $this->client()->getMyPlaylists();
-    }
+//    /**
+//     * Get the current playback info.
+//     *
+//     * @return array|object
+//     */
+//    public function getCurrentPlayback(): object
+//    {
+//        return $this->client()->getMyCurrentPlaybackInfo();
+//    }
+//
+//    /**
+//     * Get the users playlists.
+//     *
+//     * @return object
+//     */
+//    protected function getPlaylists(): object
+//    {
+//        return $this->client()->getMyPlaylists();
+//    }
+//
+//    public function makeCall(): self
+//    {
+//        try {
+//            return $this;
+//        } catch (\Exception $exception) {
+//
+//        }
+//    }
 }

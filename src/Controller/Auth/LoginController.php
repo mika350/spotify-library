@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Auth;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -15,7 +15,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
  * @author Mika Bertels <mail@mikabertels.de>
  * @package App\Controller\Auth
  */
-class LoginController extends AbstractController
+class LoginController extends BaseController
 {
     /**
      * Instance of AuthenticationUtils

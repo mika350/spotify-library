@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Entity\User;
 
 use Symfony\Component\Security\Core\User\UserInterface as DefaultUserInterface;
 
@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface as DefaultUserInterface;
  * Interface UserInterface
  *
  * @author Mika Bertels <mail@mikabertels.de>
- * @package App\Entity
+ * @package App\Entity\User
  */
 interface UserInterface extends DefaultUserInterface
 {

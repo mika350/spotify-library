@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Facade;
 
-use App\Entity\User;
+use App\Entity\User\UserEntity;
 use App\Exception\UserNotFoundException;
 use App\Service\UserService;
 
@@ -40,9 +40,9 @@ class ProfileFacade
      *
      * @throws UserNotFoundException Thrown if the user was not found.
      *
-     * @return User
+     * @return UserEntity
      */
-    public function getUserById(int $userId): User
+    public function getUserById(int $userId): UserEntity
     {
         $user = $this->userService->searchById($userId);
 
@@ -50,7 +50,7 @@ class ProfileFacade
             throw new UserNotFoundException(404, sprintf('The user with id %s was not found.', (string) $userId));
         }
 
-        assert($user instanceof User);
+        assert($user instanceof UserEntity);
 
         return $user;
     }

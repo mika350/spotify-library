@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Facade\Auth;
 
 use App\Entity\User;
+use App\Entity\User\UserEntity;
 use App\Security\EmailVerifier;
 use App\Service\EmailService;
 use App\Service\UserService;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class RegistrationFacade
@@ -70,13 +72,15 @@ class RegistrationFacade
     /**
      * Handle the register form data.
      *
-     * @param User $user
+     * @param UserEntity $user
      * @param FormInterface $form
      *
      * @return void
      */
-    public function handleRegisterForm(User $user, FormInterface $form): void
+    public function handleRegisterForm(UserEntity $user, FormInterface $form): void
     {
+        assert($user instanceof UserInterface);
+
         $user->setPassword(
             $this->passwordEncoder->encodePassword(
                 $user,

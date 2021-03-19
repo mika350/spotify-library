@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Entity\User;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,12 +12,13 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * Class User
  *
  * @author Mika Bertels <mail@mikabertels.de>
- * @package App\Entity
+ * @package App\Entity\User
  *
+ * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository", repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
-class User implements UserInterface
+class UserEntity implements UserInterface
 {
     /**
      * The email address from an user.
@@ -245,9 +246,9 @@ class User implements UserInterface
      *
      * @param string|null $name
      *
-     * @return User
+     * @return UserEntity
      */
-    public function setName(?string $name): User
+    public function setName(?string $name): UserEntity
     {
         $this->name = $name;
 

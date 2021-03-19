@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Auth;
 
-use App\Entity\User;
+use App\Entity\User\UserEntity;
 use App\Facade\Auth\RegistrationFacade;
 use App\Form\RegistrationFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -48,7 +48,7 @@ class RegistrationController extends AbstractController
      */
     public function register(Request $request): Response
     {
-        $user = new User();
+        $user = new UserEntity();
         $return = new Response();
 
         $form = $this->createForm(RegistrationFormType::class, $user);

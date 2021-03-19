@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\User;
-use App\Entity\UserInterface;
+use App\Entity\User\UserEntity;
+use App\Entity\User\UserInterface;
 use App\Repository\UserRepository;
 use SpotifyWebAPI\Session;
 use SpotifyWebAPI\SpotifyWebAPI;
@@ -66,19 +67,20 @@ class SpotifyClient
     public function getApiClient(UserInterface $user = null): SpotifyWebAPI
     {
         if ($user !== null) {
-            assert($user instanceof User);
+            assert($user instanceof UserEntity);
 
-            $this->spotifySession->refreshAccessToken($user->getSpotifyRefreshToken());
+            //$this->spotifySession->refreshAccessToken($user->getSpotifyRefreshToken());
 
-            $refreshedAccessToken = $this->spotifySession->getAccessToken();
-            $refreshToken = $this->spotifySession->getRefreshToken();
+            //$refreshedAccessToken = $this->spotifySession->getAccessToken();
+            //$refreshToken = $this->spotifySession->getRefreshToken();
 
-            $user->setSpotifyAccessToken($refreshedAccessToken);
-            $user->setSpotifyRefreshToken($refreshToken);
+            //$user->setSpotifyAccessToken($refreshedAccessToken);
+            //$user->setSpotifyRefreshToken($refreshToken);
 
-            $this->userRepository->saveUser($user);
+            //$this->userRepository->saveUser($user);
 
-            $this->spotifyWebApi->setAccessToken($refreshedAccessToken);
+            //$this->spotifyWebApi->setAccessToken($refreshedAccessToken);
+            $this->spotifyWebApi->setAccessToken($user->getSpotifyAccessToken());
         }
 
         return $this->spotifyWebApi;

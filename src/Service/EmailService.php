@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\User;
+use App\Entity\User\UserEntity;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Address;
 
@@ -47,11 +48,11 @@ class EmailService
     /**
      * Generate the confirm mail.
      *
-     * @param User $user
+     * @param UserEntity $user
      *
      * @return TemplatedEmail
      */
-    public function generateConfirmMail(User $user): TemplatedEmail
+    public function generateConfirmMail(UserEntity $user): TemplatedEmail
     {
         $templatedEmail = new TemplatedEmail();
 

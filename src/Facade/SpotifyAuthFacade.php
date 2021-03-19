@@ -7,6 +7,12 @@ namespace App\Facade;
 use App\Entity\User;
 use App\Service\SpotifyAuthService;
 
+/**
+ * Class SpotifyAuthFacade
+ *
+ * @author Mika Bertels <mail@mikabertels.de>
+ * @package App\Facade
+ */
 class SpotifyAuthFacade
 {
     /**

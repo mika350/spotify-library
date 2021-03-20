@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\User;
 use App\Entity\User\UserEntity;
 use App\Entity\User\UserInterface;
 use App\Repository\UserRepository;
@@ -31,7 +30,14 @@ class SpotifyClient
      *
      * @var Session
      */
-    private Session $spotifySession;
+    private Session $privateSpotifySession;
+
+    /**
+     * Instance of Session.
+     *
+     * @var Session
+     */
+    private Session $publicSpotifySession;
 
     /**
      * Instance of UserRepository.
@@ -44,37 +50,40 @@ class SpotifyClient
      * SpotifyClient constructor.
      *
      * @param SpotifyWebAPI $spotifyWebApi
-     * @param Session $spotifySession
      * @param UserRepository $userRepository
+     * @param Session $publicSpotifySession
+     * @param Session $privateSpotifySession
      */
     public function __construct(
         SpotifyWebAPI $spotifyWebApi,
-        Session $spotifySession,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        Session $publicSpotifySession,
+        Session $privateSpotifySession
     ) {
         $this->spotifyWebApi = $spotifyWebApi;
-        $this->spotifySession = $spotifySession;
         $this->userRepository = $userRepository;
+        $this->privateSpotifySession = $privateSpotifySession;
+        $this->publicSpotifySession = $publicSpotifySession;
     }
 
     /**
-     * Get the Spotify-Client.
+     * Get the private Spotify-Client.
      *
      * @param UserInterface|null $user
      * @param bool $refreshToken
      *
      * @return SpotifyWebAPI
      */
-    public function getApiClient(UserInterface $user = null, bool $refreshToken = false): SpotifyWebAPI
+    public function getPrivateApiClient(UserInterface $user = null, bool $refreshToken = false): SpotifyWebAPI
     {
         if ($user !== null) {
             assert($user instanceof UserEntity);
 
             if ($refreshToken === true) {
-                $this->spotifySession->refreshAccessToken($user->getSpotifyRefreshToken());
+                $this->privateSpotifySession->refreshAccessToken($user->getSpotifyRefreshToken());
 
-                $refreshedAccessToken = $this->spotifySession->getAccessToken();
-                $refreshToken = $this->spotifySession->getRefreshToken();
+                $refreshedAccessToken = $this->privateSpotifySession->getAccessToken();
+                $refreshToken = $this->privateSpotifySession->getRefreshToken();
 
                 $user->setSpotifyAccessToken($refreshedAccessToken);
                 $user->setSpotifyRefreshToken($refreshToken);
@@ -88,6 +97,21 @@ class SpotifyClient
                 $this->spotifyWebApi->setAccessToken($user->getSpotifyAccessToken());
             }
         }
+
+        return $this->spotifyWebApi;
+    }
+
+    /**
+     * Get the public Spotify-Client
+     *
+     * @return SpotifyWebAPI
+     */
+    public function getPublicApiClient(): SpotifyWebAPI
+    {
+        $this->publicSpotifySession->requestCredentialsToken();
+        $accessToken = $this->publicSpotifySession->getAccessToken();
+
+        $this->spotifyWebApi->setAccessToken($accessToken);
 
         return $this->spotifyWebApi;
     }

@@ -54,26 +54,26 @@ class SpotifyService
     }
 
     /**
-     * Get the SpotifyApiClient.
+     * Make an API-call in private user context.
      *
      * @param string $method
      * @param array $args
      *
      * @return object|null
      */
-    public function makeCall(string $method, array ...$args): ?object
+    public function makePrivateCall(string $method, ...$args): ?object
     {
         // TODO: Refactor this method.
 
         $result = null;
 
         try {
-            $spotifyClient = $this->spotifyClient->getApiClient($this->currentUser);
+            $spotifyClient = $this->spotifyClient->getPrivateApiClient($this->currentUser);
 
             $result = $spotifyClient->{$method}(...$args);
         } catch (SpotifyWebAPIException $exception) {
             if ($exception->hasExpiredToken()) {
-                $spotifyClient = $this->spotifyClient->getApiClient($this->currentUser, true);
+                $spotifyClient = $this->spotifyClient->getPrivateApiClient($this->currentUser, true);
 
                 $result = $spotifyClient->{$method}(...$args);
 
@@ -89,6 +89,32 @@ class SpotifyService
                 dump('OTHER SPOTIFY WEB API ERROR');
                 // TODO: Add other error handling.
             }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Make an API-call in public context.
+     *
+     * @param string $method
+     * @param array $args
+     *
+     * @return object|null
+     */
+    public function makePublicCall(string $method, ...$args): ?object
+    {
+        // TODO: Refactor this method.
+
+        $result = null;
+
+        try {
+            $spotifyClient = $this->spotifyClient->getPublicApiClient();
+
+            $result = $spotifyClient->{$method}(...$args);
+        } catch (SpotifyWebAPIException $exception) {
+            dump('ERROR ON PUBLIC API CALL');
+            // TODO: Add error handling.
         }
 
         return $result;

@@ -31,14 +31,28 @@ services:
 
     SpotifyWebAPI\SpotifyWebAPI: ~
 
-    SpotifyWebAPI\Session:
+    spotify_web_api.private_session:
+        class: SpotifyWebAPI\Session
         arguments:
             - '%app.spotify.client_id%'
             - '%app.spotify.client_secret%'
             - '%app.spotify.callback_url%'
 
+    spotify_web_api.public_session:
+        class: SpotifyWebAPI\Session
+        arguments:
+            - '%app.spotify.client_id%'
+            - '%app.spotify.client_secret%'
+
+    App\Service\SpotifyClient:
+        arguments:
+            - '@SpotifyWebAPI\SpotifyWebAPI'
+            - '@App\Repository\UserRepository'
+            - '@spotify_web_api.public_session'
+            - '@spotify_web_api.private_session'
+
     App\Service\SpotifyAuthService:
         arguments:
-            - '@SpotifyWebAPI\Session'
+            - '@spotify_web_api.private_session'
             - '@security.helper'
             - '@doctrine.orm.entity_manager'

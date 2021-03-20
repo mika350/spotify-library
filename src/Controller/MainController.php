@@ -21,6 +21,8 @@ class MainController extends BaseController
      *
      * @Route("/", name="app_main")
      *
+     * @param SpotifyService $spotifyService
+     *
      * @return Response
      */
     public function mainAction(SpotifyService $spotifyService): Response

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Service\SpotifyService;
+use SpotifyWebAPI\SpotifyWebAPIException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,7 +27,9 @@ class MainController extends BaseController
      */
     public function mainAction(SpotifyService $spotifyService): Response
     {
-        dump($spotifyService->makeCall()->getMyPlaylists());die;
+        dump($this->getUser());
+        dump($spotifyService->makeCall('getMyPlaylists', ['limit' => 6]));
+die;
 
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\User\UserInterface;
+use Closure;
 use SpotifyWebAPI\SpotifyWebAPI;
+use SpotifyWebAPI\SpotifyWebAPIException;
 use Symfony\Component\Security\Core\Security;
 
 /**
@@ -54,39 +56,41 @@ class SpotifyService
     /**
      * Get the SpotifyApiClient.
      *
-     * @return SpotifyWebAPI
+     * @param string $method
+     * @param array $args
+     *
+     * @return object|null
      */
-    public function makeCall(): SpotifyWebAPI
+    public function makeCall(string $method, array ...$args): ?object
     {
-        return $this->spotifyClient->getApiClient($this->currentUser);
-    }
+        // TODO: Refactor this method.
 
-//    /**
-//     * Get the current playback info.
-//     *
-//     * @return array|object
-//     */
-//    public function getCurrentPlayback(): object
-//    {
-//        return $this->client()->getMyCurrentPlaybackInfo();
-//    }
-//
-//    /**
-//     * Get the users playlists.
-//     *
-//     * @return object
-//     */
-//    protected function getPlaylists(): object
-//    {
-//        return $this->client()->getMyPlaylists();
-//    }
-//
-//    public function makeCall(): self
-//    {
-//        try {
-//            return $this;
-//        } catch (\Exception $exception) {
-//
-//        }
-//    }
+        $result = null;
+
+        try {
+            $spotifyClient = $this->spotifyClient->getApiClient($this->currentUser);
+
+            $result = $spotifyClient->{$method}(...$args);
+        } catch (SpotifyWebAPIException $exception) {
+            if ($exception->hasExpiredToken()) {
+                $spotifyClient = $this->spotifyClient->getApiClient($this->currentUser, true);
+
+                $result = $spotifyClient->{$method}(...$args);
+
+                dump('REFACTORED TOKENS');
+            } elseif ($exception->isRateLimited()) {
+                $result = null;
+
+                dump('RATE LIMIT REACHED');
+                // TODO: Add rate limit retry.
+            } else {
+                $result = null;
+
+                dump('OTHER SPOTIFY WEB API ERROR');
+                // TODO: Add other error handling.
+            }
+        }
+
+        return $result;
+    }
 }

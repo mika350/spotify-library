@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\User;
 use App\Entity\User\UserEntity;
 use Doctrine\ORM\EntityManager;
 use SpotifyWebAPI\Session;
@@ -97,6 +96,6 @@ class SpotifyAuthService
         $currentUser->setSpotifyAccessToken($accessToken);
         $currentUser->setSpotifyRefreshToken($refreshToken);
 
-        $this->entityManager->getRepository(User::class)->saveUser($currentUser);
+        $this->entityManager->getRepository(UserEntity::class)->saveUser($currentUser);
     }
 }

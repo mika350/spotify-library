@@ -61,26 +61,32 @@ class SpotifyClient
      * Get the Spotify-Client.
      *
      * @param UserInterface|null $user
+     * @param bool $refreshToken
      *
      * @return SpotifyWebAPI
      */
-    public function getApiClient(UserInterface $user = null): SpotifyWebAPI
+    public function getApiClient(UserInterface $user = null, bool $refreshToken = false): SpotifyWebAPI
     {
         if ($user !== null) {
             assert($user instanceof UserEntity);
 
-            //$this->spotifySession->refreshAccessToken($user->getSpotifyRefreshToken());
+            if ($refreshToken === true) {
+                $this->spotifySession->refreshAccessToken($user->getSpotifyRefreshToken());
 
-            //$refreshedAccessToken = $this->spotifySession->getAccessToken();
-            //$refreshToken = $this->spotifySession->getRefreshToken();
+                $refreshedAccessToken = $this->spotifySession->getAccessToken();
+                $refreshToken = $this->spotifySession->getRefreshToken();
 
-            //$user->setSpotifyAccessToken($refreshedAccessToken);
-            //$user->setSpotifyRefreshToken($refreshToken);
+                $user->setSpotifyAccessToken($refreshedAccessToken);
+                $user->setSpotifyRefreshToken($refreshToken);
 
-            //$this->userRepository->saveUser($user);
+                $this->userRepository->saveUser($user);
 
-            //$this->spotifyWebApi->setAccessToken($refreshedAccessToken);
-            $this->spotifyWebApi->setAccessToken($user->getSpotifyAccessToken());
+                $this->spotifyWebApi->setAccessToken($refreshedAccessToken);
+            }
+
+            if ($refreshToken === false) {
+                $this->spotifyWebApi->setAccessToken($user->getSpotifyAccessToken());
+            }
         }
 
         return $this->spotifyWebApi;

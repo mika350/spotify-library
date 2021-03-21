@@ -2,7 +2,7 @@
 
 {% block title %}Spotify Library{% endblock %}
 
-{% block body %}
+{% block content %}
     <h1>Hello World</h1>
 
     {% if user %}
@@ -10,4 +10,7 @@
     {% else %}
         <p>You're not logged in.</p>
     {% endif %}
+
+
+    {{ dump(userProvider.currentPlayback) }}
 {% endblock %}

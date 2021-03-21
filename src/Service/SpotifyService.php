@@ -33,9 +33,9 @@ class SpotifyService
     /**
      * Instance of currently logged in User.
      *
-     * @var UserInterface
+     * @var UserInterface|null
      */
-    private UserInterface $currentUser;
+    private ?UserInterface $currentUser = null;
 
     /**
      * SpotifyService constructor.
@@ -48,7 +48,9 @@ class SpotifyService
         $this->security = $security;
         $this->spotifyClient = $spotifyClient;
 
-        $this->currentUser = $this->security->getUser();
+        if ($this->security->getUser() !== null) {
+            $this->currentUser = $this->security->getUser();
+        }
     }
 
     /**

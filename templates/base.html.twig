@@ -3,16 +3,33 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <link rel="stylesheet" href="{{ 'assets/app.css' }}">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
 
         <title>{% block title %}Welcome!{% endblock %}</title>
     </head>
     <body>
+        {% block header %}
+            <header class="header">
+                {% include '_components/base/header.html.twig' %}
+            </header>
+        {% endblock %}
 
-        {% block body %}{% endblock %}
+        {% block sub_header %}
+            <div class="sub-header container-fluid"></div>
+        {% endblock %}
 
+        {% block content %}{% endblock %}
 
-        <script src="{{ asset('assets/app.js') }}" ></script>
+        {% block footer %}
+            <footer class="footer">
+                {% include '_components/base/footer.html.twig' %}
+            </footer>
+        {% endblock %}
 
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
     </body>
 </html>

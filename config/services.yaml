@@ -56,3 +56,5 @@ services:
             - '@spotify_web_api.private_session'
             - '@security.helper'
             - '@doctrine.orm.entity_manager'
+
+    App\Provider\UserProvider: ~

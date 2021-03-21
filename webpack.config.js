@@ -6,7 +6,7 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 
 Encore
     .setOutputPath('public/assets/')
-    .setPublicPath('/public')
+    .setPublicPath('assets/')
 
     .addEntry('app', './assets/js/all.js')
 

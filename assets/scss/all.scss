@@ -1,6 +1,6 @@
 @import "~bootstrap/scss/bootstrap";
 
-body {
-  background: #F2F2F2;
-}
+@import "variables/_index.scss";
+@import "components/_index.scss";
 
+@import "pages/_index.scss";

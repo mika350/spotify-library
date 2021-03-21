@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\User\UserInterface;
-use Closure;
-use SpotifyWebAPI\SpotifyWebAPI;
 use SpotifyWebAPI\SpotifyWebAPIException;
 use Symfony\Component\Security\Core\Security;
 
@@ -77,7 +75,7 @@ class SpotifyService
 
                 $result = $spotifyClient->{$method}(...$args);
 
-                dump('REFACTORED TOKENS');
+                dump('REFRESHED TOKENS');
             } elseif ($exception->isRateLimited()) {
                 $result = null;
 

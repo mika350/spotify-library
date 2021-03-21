@@ -1,3 +1,4 @@
+# Default ignores
 /.env.local
 /.env.local.php
 /.env.*.local
@@ -5,16 +6,19 @@
 /public/bundles/
 /var/
 /vendor/
+/.env
+/.idea
 
+# QA tools
+/.phpcs-cache
+/.deptrac.cache
 .phpunit
 .phpunit.result.cache
 /phpunit.xml
 
-/.env
-/.idea
-
-/.phpcs-cache
-
-###> qossmic/deptrac-shim ###
-/.deptrac.cache
-###< qossmic/deptrac-shim ###
+# Compiled frontend assets
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+/public/assets/

@@ -18,8 +18,17 @@
         }
     }
 
+    .navbar-player {
+        width: 100%;
+
+        @include media-breakpoint-up(lg) {
+            width: auto;
+        }
+    }
+
     .navbar-player-text {
         width: 12rem;
+        text-align: left;
 
         &--small,
         &--artist {
@@ -37,5 +46,11 @@
         overflow: hidden;
         text-overflow: ellipsis;
         display: block;
+    }
+
+    .navbar-dark {
+        .navbar-toggler {
+            border: 0;
+        }
     }
 }

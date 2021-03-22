@@ -50,4 +50,14 @@ class UserProvider
     {
         return $this->spotifyService->makePrivateCall('getMyCurrentPlaybackInfo');
     }
+
+    /**
+     * Check if an user is logged in.
+     *
+     * @return bool
+     */
+    public function isLoggedIn(): bool
+    {
+        return $this->security->getUser() ? true : false;
+    }
 }

@@ -1,5 +1,9 @@
 .login-container {
     .jumbotron {
-        background-color: $light-gray;
+        background-color: $white;
+
+        box-shadow: 0px 0px 19px 5px rgba(161,161,161,0.5);
+        -webkit-box-shadow: 0px 0px 19px 5px rgba(161,161,161,0.5);
+        -moz-box-shadow: 0px 0px 19px 5px rgba(161,161,161,0.5);
     }
 }

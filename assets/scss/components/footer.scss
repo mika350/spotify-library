@@ -1,0 +1,9 @@
+.footer {
+    color: $bright-white;
+    background: $dark-gray;
+
+    &--container {
+        min-height: 5vh;
+        display: flex;
+    }
+}

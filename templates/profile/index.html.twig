@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    {{ user.id }}<br>
-    {{ user.name }}
+{% block content %}
+
+    {% include '_components/main/playlist-slider.html.twig' %}
+
 {% endblock %}

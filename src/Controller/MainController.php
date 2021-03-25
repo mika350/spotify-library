@@ -28,8 +28,9 @@ class MainController extends BaseController
     public function mainAction(SpotifyService $spotifyService): Response
     {
         dump($this->getUser());
-        dump($spotifyService->makePublicCall('getTrack', '7EjyzZcbLxW7PaaLua9Ksb'));
-        dump($spotifyService->makePrivateCall('getMyPlaylists'));
+
+//        dump($spotifyService->makePublicCall('getTrack', '7EjyzZcbLxW7PaaLua9Ksb'));
+//        dump($spotifyService->makePrivateCall('getMyPlaylists'));
 
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',

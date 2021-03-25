@@ -1,12 +1,20 @@
 <div class="navbar-player d-flex justify-content-center">
     <div class="navbar-player-text">
-        <small class="navbar-player-text--small">Now Playing:</small><br>
-        <span class="navbar-player-text--title text-truncate">{{ playback.item.name }}</span>
-        <small class="navbar-player-text--artist text-truncate">
+        <div class="navbar-player-text--small">
+            Now Playing:
+            <ul class="animated-bars">
+                <li class="animated-bars--item"></li>
+                <li class="animated-bars--item"></li>
+                <li class="animated-bars--item"></li>
+                <li class="animated-bars--item"></li>
+            </ul>
+        </div>
+        <div class="navbar-player-text--title text-truncate">{{ playback.item.name }}</div>
+        <div class="navbar-player-text--artist text-truncate">
             {% for artist in playback.item.artists %}
                 {{ artist.name }}{% if not loop.last %},{% endif %}
             {% endfor %}
-        </small>
+        </div>
     </div>
 
     <div class="navbar-player-image">

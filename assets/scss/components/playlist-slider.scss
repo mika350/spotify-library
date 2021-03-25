@@ -1,5 +1,5 @@
 .playlist-slider {
-
+    display: flex;
 
     &--item {
         margin: 0 0.5rem;
@@ -12,13 +12,31 @@
 
         &--heading {
             margin-top: 1rem;
+            margin-bottom: 0;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
+        &--owner {
+            margin-bottom: 0.5rem;
+            display: block;
+            color: $gray;
+        }
+
         &--button {
             margin-bottom: 0.5rem;
+        }
+    }
+
+    .slick-arrow {
+        display: flex;
+        align-items: center;
+        font-size: 2rem;
+        color: black;
+
+        &:hover {
+            background-color: $gray;
         }
     }
 }

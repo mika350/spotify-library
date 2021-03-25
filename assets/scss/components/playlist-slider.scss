@@ -1,0 +1,24 @@
+.playlist-slider {
+
+
+    &--item {
+        margin: 0 0.5rem;
+        max-width: 200px;
+    }
+
+    .playlist-element {
+        margin: 0 0.5rem;
+        width: 100%;
+
+        &--heading {
+            margin-top: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        &--button {
+            margin-bottom: 0.5rem;
+        }
+    }
+}

@@ -1,4 +1,7 @@
 .content {
     min-height: 85vh;
     display: flex;
+    flex-direction: column;
+    padding-top: 1rem;
+    justify-content: center;
 }

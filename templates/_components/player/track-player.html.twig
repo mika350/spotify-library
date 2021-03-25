@@ -1,0 +1,15 @@
+<div class="navbar-player d-flex justify-content-center">
+    <div class="navbar-player-text">
+        <small class="navbar-player-text--small">Now Playing:</small><br>
+        <span class="navbar-player-text--title text-truncate">{{ playback.item.name }}</span>
+        <small class="navbar-player-text--artist text-truncate">
+            {% for artist in playback.item.artists %}
+                {{ artist.name }}{% if not loop.last %},{% endif %}
+            {% endfor %}
+        </small>
+    </div>
+
+    <div class="navbar-player-image">
+        <img class="img-fluid" src="{{ playback.item.album.images[2].url }}">
+    </div>
+</div>

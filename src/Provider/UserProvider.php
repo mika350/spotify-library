@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Provider;
 
 use App\Service\SpotifyService;
+use SpotifyWebAPI\SpotifyWebAPI;
 use Symfony\Component\Security\Core\Security;
 
 /**
@@ -59,5 +60,10 @@ class UserProvider
     public function isLoggedIn(): bool
     {
         return $this->security->getUser() ? true : false;
+    }
+
+    public function getUsersPlaylists(): ?object
+    {
+        return $this->spotifyService->makePrivateCall('getMyPlaylists');
     }
 }

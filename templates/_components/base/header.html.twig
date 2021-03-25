@@ -42,25 +42,19 @@
                     </li>
                 </ul>
             {% endif %}
-
         </div>
 
-        {% if userProvider.currentPlayback is not null %}
-            <div class="navbar-player d-flex justify-content-center">
-                <div class="navbar-player-text">
-                    <small class="navbar-player-text--small">Now Playing:</small><br>
-                    <span class="navbar-player-text--title text-truncate">{{ userProvider.currentPlayback.item.name }}</span>
-                    <small class="navbar-player-text--artist text-truncate">
-                        {% for artist in userProvider.currentPlayback.item.artists %}
-                            {{ artist.name }}{% if not loop.last %},{% endif %}
-                        {% endfor %}
-                    </small>
-                </div>
+        {% set playback = userProvider.currentPlayback %}
 
-                <div class="navbar-player-image">
-                    <img class="img-fluid" src="{{ userProvider.currentPlayback.item.album.images[2].url }}">
-                </div>
-            </div>
+        {% if playback is not null %}
+            {% if playback.currently_playing_type == 'track' %}
+                {% include '_components/player/track-player.html.twig' with { playback: playback } %}
+            {% endif %}
+
+            {# TODO: Add functionality for podcast playback. #}
+{#            {% if playback.currently_playing_type == 'episode' %}#}
+{#                {% include '_components/player/podcast-player.html.twig' with { playback: playback } %}#}
+{#            {% endif %}#}
         {% endif %}
     </nav>
 </div>

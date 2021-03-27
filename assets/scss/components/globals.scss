@@ -16,3 +16,14 @@ body {
     border-radius: 0;
     background-color: $light-gray;
 }
+
+.dropdown-menu {
+    border: 0;
+    border-radius: 0;
+}
+
+.has-soft-shadow {
+    box-shadow: 0px 0px 19px 5px rgba(0,0,0,0.1);
+    -webkit-box-shadow: 0px 0px 19px 5px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 0px 19px 5px rgba(0,0,0,0.1);
+}

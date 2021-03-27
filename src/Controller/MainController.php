@@ -29,7 +29,8 @@ class MainController extends BaseController
     {
         dump($this->getUser());
 
-//        dump($spotifyService->makePublicCall('getTrack', '7EjyzZcbLxW7PaaLua9Ksb'));
+        dump($spotifyService->makePublicCall('getTrack', '7EjyzZcbLxW7PaaLua9Ksb'));
+        dump($spotifyService->makePublicCall('getTrack', '26DtruNHXynXhfKkEE9wQa'));
 //        dump($spotifyService->makePrivateCall('getMyPlaylists'));
 
         return $this->render('main/index.html.twig', [

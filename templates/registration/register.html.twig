@@ -15,19 +15,22 @@
                 {{ form_start(registrationForm) }}
                     {{ form_row(registrationForm.name, {
                         label: 'Name',
-                        help: 'This name will be shown on your profile.'
+                        help: 'This name will be shown on your profile.',
+                        attr: {
+                            autofocus: ''
+                        }
                     }) }}
 
                     {{ form_row(registrationForm.email, {
-                        label: 'Email Address'
+                        label: 'Email Address',
                     }) }}
 
                     {{ form_row(registrationForm.plainPassword, {
-                        label: 'Password'
+                        label: 'Password',
                     }) }}
 
                     {{ form_row(registrationForm.agreeTerms, {
-                        label: 'I\'ve read an accepted the terms'
+                        label: 'I\'ve read an accepted the terms',
                     }) }}
 
                     <button type="submit" class="btn btn-success btn-block">Submit</button>

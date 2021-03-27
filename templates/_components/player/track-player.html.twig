@@ -9,10 +9,10 @@
                 <li class="animated-bars--item"></li>
             </ul>
         </div>
-        <div class="navbar-player-text--title text-truncate">{{ playback.item.name }}</div>
+        <a href="{{ path('app_track_detail', {trackId: playback.item.id }) }}" title="{{ playback.item.name }}" class="navbar-player-text--title text-truncate">{{ playback.item.name }}</a>
         <div class="navbar-player-text--artist text-truncate">
             {% for artist in playback.item.artists %}
-                {{ artist.name }}{% if not loop.last %},{% endif %}
+                <a href="{{ path('app_artist_detail', { artistId: artist.id }) }}">{{ artist.name }}</a>{% if not loop.last %},{% endif %}
             {% endfor %}
         </div>
     </div>

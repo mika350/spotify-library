@@ -12,19 +12,8 @@
         display: flex;
     }
 
-    .header-menu {
-        list-style-type: none;
-        display: inline-flex;
-        width: 100%;
-        height: 100%;
-        justify-content: space-around;
-        align-items: center;
-        margin: 0;
-        padding: 0;
-
-        &--item {
-
-        }
+    #profile-menu-link:hover {
+        cursor: pointer;
     }
 
     .navbar {
@@ -42,6 +31,10 @@
     .navbar-player-text {
         width: 12rem;
         text-align: left;
+
+        &--title {
+            color: $white;
+        }
 
         &--small {
             .animated-bars {
@@ -101,6 +94,10 @@
         &--artist {
             color: $gray;
             font-size: 80%;
+
+            a {
+                color: $gray;
+            }
         }
     }
 

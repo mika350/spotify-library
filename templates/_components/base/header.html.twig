@@ -27,11 +27,11 @@
             {% if userProvider.loggedIn == true %}
                 <ul class="navbar-nav ml-auto">
                     <li class="dropdown nav-item{% if app.request.attributes.get('_route') == 'app_profile' %} active{% endif %}">
-                        <a class="nav-link dropdown-toggle" type="button" id="profile-menu-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ user.name }}
+                        <a class="nav-link dropdown-toggle" id="profile-menu-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ userProvider.getUser.name }}
                         </a>
                         <div class="dropdown-menu has-soft-shadow" aria-labelledby="profile-menu-link">
-                            <a class="dropdown-item" href="{{ path('app_profile', { userId: user.id }) }}">Profile</a>
+                            <a class="dropdown-item" href="{{ path('app_profile', { userId: userProvider.getUser.id }) }}">Profile</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
                         </div>

@@ -1,4 +1,4 @@
-.playlist-slider {
+.playlist-slider-navigation {
     display: flex;
 
     &--item {
@@ -6,7 +6,7 @@
         max-width: 200px;
     }
 
-    .playlist-element {
+    .playlist-navigation-element {
         margin: 0 0.5rem;
         width: 100%;
 

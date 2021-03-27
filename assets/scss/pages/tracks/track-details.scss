@@ -1,0 +1,10 @@
+.track-detail {
+    &--artist-link {
+        color: $dark-gray;
+
+        &:hover {
+            color: lighten($dark-gray, 20);
+            text-decoration: none;
+        }
+    }
+}

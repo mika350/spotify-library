@@ -3,20 +3,38 @@
 {% block title %}Register{% endblock %}
 
 {% block content %}
-    {% for flashError in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-    {% endfor %}
+    <div class="container login-container">
+        <div class="row h-100">
+            <div class="jumbotron m-auto col-12 col-sm-9 col-md-8 col-lg-6 has-soft-shadow">
+                {% for flashError in app.flashes('verify_email_error') %}
+                    <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+                {% endfor %}
 
-    <h1>Register</h1>
+                <h1>Sign Up</h1>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.name) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+                {{ form_start(registrationForm) }}
+                    {{ form_row(registrationForm.name, {
+                        label: 'Name',
+                        help: 'This name will be shown on your profile.'
+                    }) }}
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+                    {{ form_row(registrationForm.email, {
+                        label: 'Email Address'
+                    }) }}
+
+                    {{ form_row(registrationForm.plainPassword, {
+                        label: 'Password'
+                    }) }}
+
+                    {{ form_row(registrationForm.agreeTerms, {
+                        label: 'I\'ve read an accepted the terms'
+                    }) }}
+
+                    <button type="submit" class="btn btn-success btn-block">Submit</button>
+                {{ form_end(registrationForm) }}
+
+
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -6,3 +6,5 @@ twig:
 
     globals:
         userProvider: '@App\Provider\UserProvider'
+
+    form_themes: [ 'bootstrap_4_horizontal_layout.html.twig' ]

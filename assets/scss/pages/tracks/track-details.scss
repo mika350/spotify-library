@@ -3,8 +3,7 @@
         color: $dark-gray;
 
         &:hover {
-            color: lighten($dark-gray, 20);
-            text-decoration: none;
+            color: $dark-gray;
         }
     }
 }

@@ -1,0 +1,27 @@
+.artist-detail-header-big-thumbnail:before {
+    content: '';
+    height: 60%;
+    background-size: cover;
+    background-position: center;
+    filter: blur(15px) brightness(45%);
+    position: absolute;
+    width: 100%;
+    z-index: -1000;
+}
+
+.artist-detail-header {
+    align-items: center;
+    height: 60%;
+
+    &--image {
+        text-align: center;
+    }
+
+    &--name {
+        color: $white;
+
+        h1 {
+            font-size: 10vh;
+        }
+    }
+}

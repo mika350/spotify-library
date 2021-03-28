@@ -4,13 +4,13 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-12 col-md-4">
-                <img src="{{ trackDetails.trackData.album.images.0.url }}" class="img-fluid">
+            <div class="col-12 col-sm-4">
+                <img src="{{ trackDetails.trackData.album.images.0.url }}" class="img-fluid has-soft-shadow">
             </div>
 
-            <div class="col-12 col-md-6 track-detail">
-                <a class="track-detail--artist-link" href="{{ path('app_artist_detail', { artistId: trackDetails.artistData.id }) }}"><h2>{{ trackDetails.artistData.name }}</h2></a>
+            <div class="col-12 col-sm-8 col-md-6 track-detail">
                 <h1 class="track-detail--track-name">{{ trackDetails.trackData.name }}</h1>
+                <a class="track-detail--artist-link" href="{{ path('app_artist_detail', { artistId: trackDetails.artistData.id }) }}"><h2>{{ trackDetails.artistData.name }}</h2></a>
                 <p>Popularity: {{ trackDetails.trackData.popularity }}</p>
                 {% if trackDetails.trackData.explicit == true %}
                     <span class="badge badge-warning">Explicit</span>

@@ -2,6 +2,22 @@
 
 {% block content %}
 
-    {{ dump(artist) }}
+    <div class="container-fluid">
+        <div class="artist-detail-header-big-thumbnail row artist-detail-header">
+            <div class="col-12 col-sm-2 col-md-4 artist-detail-header--image">
+                <img class="img-fluid artist-detail-image" id="artist-detail-image" src="{{ artist.images.0.url }}" width="400" height="400" crossorigin="Anonymous">
+            </div>
+
+            <div class="col-12 col-sm-10 col-md-8 artist-detail-header--name">
+                <h1>{{ artist.name }}</h1>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .artist-detail-header-big-thumbnail:before {
+            background-image: url('{{ artist.images.0.url }}')
+        }
+    </style>
 
 {% endblock %}

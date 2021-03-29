@@ -28,6 +28,10 @@
         }
     }
 
+    .form-control:focus {
+        box-shadow: none;
+    }
+
     .navbar-player-text {
         width: 12rem;
         text-align: left;

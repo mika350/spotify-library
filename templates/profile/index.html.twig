@@ -2,6 +2,49 @@
 
 {% block content %}
 
-    {% include '_components/main/playlist-slider.html.twig' %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <div class="playlist-slider-preview">
+                    {% for item in userProvider.getUsersPlaylists.items %}
+                        <div class="playlist-slider-preview--item">
+                            <img src="{{ item.images[0].url }}" width="500" height="500" class="img-fluid playlist-slider-preview--item">
+                            <div class="playlist-preview-element">
+                                <h4 class="playlist-preview-element--heading">{{ item.name }}</h4>
+                                <small class="playlist-preview-element--owner">{{ item.owner.display_name }}</small>
+                                <a href="#" class="btn btn-block btn-success playlist-preview-element--button">Play on Spotify</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-12 col-md-8">
+                <div class="playlist-slider-navigation">
+                    {% for item in userProvider.getUsersPlaylists.items %}
+                        {% set gallery_item = {
+                            'wrapper_class': 'playlist-slider-navigation--item',
+                            'image_url': item.images[0].url,
+                            'image_class': 'img-fluid playlist-slider-navigation--item',
+                            'text_wrapper_class': 'playlist-navigation-element',
+                            'text_heading_class': 'playlist-navigation-element--heading',
+                            'text_heading_value': item.name,
+                            'text_small_class': 'playlist-navigation-element--owner',
+                            'text_small_value': item.owner.display_name,
+                            'text_heading_link': 'test'
+                        } %}
+
+                        {% include '_components/gallery/gallery-item.html.twig' with gallery_item %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+
 
 {% endblock %}

@@ -1,6 +1,7 @@
 .track-detail {
     &--artist-link {
         color: $dark-gray;
+        display: inline-block;
 
         &:hover {
             color: $dark-gray;

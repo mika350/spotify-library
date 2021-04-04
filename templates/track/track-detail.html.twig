@@ -5,23 +5,27 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-sm-4">
-                <img src="{{ trackDetails.trackData.album.images.0.url }}" class="img-fluid has-soft-shadow">
+                <img src="{{ trackDetails.album.images.0.url }}" class="img-fluid has-soft-shadow">
             </div>
 
             <div class="col-12 col-sm-8 col-md-6 track-detail">
-                <h1 class="track-detail--track-name">{{ trackDetails.trackData.name }}</h1>
-                <a class="track-detail--artist-link" href="{{ path('app_artist_detail', { artistId: trackDetails.artistData.id }) }}"><h2>{{ trackDetails.artistData.name }}</h2></a>
-                <p>Popularity: {{ trackDetails.trackData.popularity }}</p>
-                {% if trackDetails.trackData.explicit == true %}
+                <h1 class="track-detail--track-name">{{ trackDetails.name }}</h1>
+
+                {% for artist in trackDetails.artists %}
+                    <h2><a class="track-detail--artist-link" href="{{ path('app_artist_detail', { artistId: artist.id }) }}">{{ artist.name }}</a>{% if not loop.last %},{% endif %}</h2>
+                {% endfor %}
+
+                <p>Popularity: {{ trackDetails.popularity }}</p>
+                {% if trackDetails.explicit == true %}
                     <span class="badge badge-warning">Explicit</span>
                 {% endif %}
 
-                {% set duration_seconds = trackDetails.trackData.duration_ms / 1000 %}
+                {% set duration_seconds = trackDetails.duration_ms / 1000 %}
                 <p>Duration: {{ duration_seconds|round|date('i:s')  }} Min.</p>
             </div>
 
             <div class="col-12 col-md-2">
-                <h3>{{ trackDetails.trackData.album.name }}</h3>
+                <h3>{{ trackDetails.album.name }}</h3>
             </div>
         </div>
     </div>

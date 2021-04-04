@@ -2,6 +2,134 @@
 
 {% block content %}
 
-    {{ dump(searchResult) }}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2>Artists</h2>
+            </div>
+            {% for artist in searchResult.artists.items %}
 
+                {% if artist.images is not empty %}
+                    {% set image_url = artist.images[0].url %}
+                {% else %}
+                    {% set image_url = asset('assets/images/no-picture.png') %}
+                {% endif %}
+
+                {% set gallery_item = {
+                    'wrapper_class': 'col-12 col-sm-5 col-md-4 col-lg-2',
+                    'image_url': image_url,
+                    'image_class': 'img-fluid',
+                    'text_wrapper_class': '',
+                    'text_heading_class': '',
+                    'text_heading_value': artist.name,
+                    'text_small_class': '',
+                    'text_small_value': '',
+                    'text_heading_link': path('app_artist_detail', { artistId: artist.id })
+                } %}
+
+                {% include '_components/gallery/gallery-item.html.twig' with gallery_item %}
+
+            {% endfor %}
+
+            {# TODO: Add 'Explore More' button if there are more results. #}
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h2>Tracks</h2>
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col"></th>
+                        <th scope="col">Track</th>
+                        <th scope="col">Artist</th>
+                        <th scope="col">Album</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for track in searchResult.tracks.items %}
+                        <tr>
+                            <th scope="row">
+                                {{ loop.index }}
+                            </th>
+                            <td>
+                                <img class="img-fluid" src="{{ track.album.images[2].url }}">
+                            </td>
+                            <td>
+                                <a href="{{ path('app_track_detail', { trackId: track.id }) }}">{{ track.name }}</a>
+                            </td>
+                            <td>
+                                {% for artist in track.artists %}
+                                    <a href="{{ path('app_artist_detail', { artistId: artist.id }) }}">{{ artist.name }}</a>{% if not loop.last %},{% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>{{ track.album.name }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h2>Albums</h2>
+            </div>
+            {% for album in searchResult.albums.items %}
+
+                {% if album.images is not empty %}
+                    {% set image_url = album.images[0].url %}
+                {% else %}
+                    {% set image_url = asset('assets/images/no-picture.png') %}
+                {% endif %}
+
+                {% set gallery_item = {
+                    'wrapper_class': 'col-12 col-sm-5 col-md-4 col-lg-2',
+                    'image_url': image_url,
+                    'image_class': 'img-fluid',
+                    'text_wrapper_class': '',
+                    'text_heading_class': '',
+                    'text_heading_value': album.name,
+                    'text_small_class': '',
+                    'text_small_value': '',
+                    'text_heading_link': 'test'
+                } %}
+
+                {% include '_components/gallery/gallery-item.html.twig' with gallery_item %}
+
+            {% endfor %}
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h2>Playlists</h2>
+            </div>
+            {% for playlist in searchResult.playlists.items %}
+
+                {% if playlist.images is not empty %}
+                    {% set image_url = playlist.images[0].url %}
+                {% else %}
+                    {% set image_url = asset('assets/images/no-picture.png') %}
+                {% endif %}
+
+                {% set gallery_item = {
+                    'wrapper_class': 'col-12 col-sm-5 col-md-4 col-lg-2',
+                    'image_url': image_url,
+                    'image_class': 'img-fluid',
+                    'text_wrapper_class': '',
+                    'text_heading_class': '',
+                    'text_heading_value': playlist.name,
+                    'text_small_class': '',
+                    'text_small_value': '',
+                    'text_heading_link': 'test'
+                } %}
+
+                {% include '_components/gallery/gallery-item.html.twig' with gallery_item %}
+
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

@@ -38,18 +38,8 @@ class TrackFacade
      *
      * @return object|null
      */
-    public function getTrackDetails(string $trackId): ?array
+    public function getTrackDetails(string $trackId): ?object
     {
-        $result = [];
-
-        $result['trackData'] = $this->spotifyService->makePublicCall('getTrack', $trackId);
-
-        if (count($result['trackData']->artists) === 1) {
-            $artistId = $result['trackData']->artists[0]->id;
-
-            $result['artistData'] = $this->spotifyService->makePublicCall('getArtist', $artistId);
-        }
-
-        return !empty($result) ? $result : null;
+        return $this->spotifyService->makePublicCall('getTrack', $trackId);
     }
 }

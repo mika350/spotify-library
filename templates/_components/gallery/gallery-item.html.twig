@@ -1,0 +1,19 @@
+<div class="{{ wrapper_class }}">
+    <img src="{{ image_url }}" width="200" height="200" class="{{ image_class }}">
+    <div class="{{ text_wrapper_class }}">
+
+        {% if text_heading_value is defined %}
+            <h4 {% if text_heading_class is defined %}class="{{ text_heading_class }}"{% endif %}>
+                {% if text_heading_link is defined %}
+                    <a href="{{ text_heading_link }}">{{ text_heading_value }}</a>
+                {% else %}
+                    {{ text_heading_value }}
+                {% endif %}
+            </h4>
+        {% endif %}
+
+        {% if text_small_value is defined %}
+            <small {% if text_small_class is defined %}class="{{ text_small_class }}"{% endif %}>{{ text_small_value }}</small>
+        {% endif %}
+    </div>
+</div>

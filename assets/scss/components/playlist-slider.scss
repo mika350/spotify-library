@@ -4,6 +4,12 @@
     &--item {
         margin: 0 0.5rem;
         max-width: 200px;
+
+        img {
+            object-fit: cover;
+            width: 200px;
+            height: 200px;
+        }
     }
 
     .playlist-navigation-element {
